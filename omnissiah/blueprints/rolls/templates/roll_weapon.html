@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="card border-dark mb-3">
+<div class="card border-dark mb-3 w-50"">
     <div class="card-header">
         Weapon Definition
     </div>
     <div class="card-body text-dark">
         <form action="{{ url_for('rolls.submit_roll_weapon') }}" method="post" class="needs-validation" novalidate>
-          <div class="row">
+          <div class="row mb-3">
             <div class="col">
               <label for="weapon_name" class="form-label">Weapon Name</label>
               <input name="weapon_name" type="text" class="form-control" id="weapon_name" placeholder="ie. Laspistol" value="" required>
@@ -43,61 +43,73 @@
             </div>
           </div>
 
-          <div class="row">
-            <div class="col">
-              <label for="weapon_range" class="form-label">Weapon Range</label>
-              <input name="weapon_range" type="number" class="form-control" id="weapon_range" placeholder="ie. 30" required>
-              <div class="invalid-feedback">
-                Weapon range required.
+
+          <div class="input-group input-group-sm mb-3 p-1">
+
+              <input name="rof_single" type="checkbox" class="btn-check flex-grow-1" id="rof_single" checked autocomplete="off">
+              <label class="btn btn-outline-secondary d-inline-flex align-items-center" style="border-radius:.2rem" for="rof_single">Single</label>
+
+              <span class="input-group-text align-self-center" style="max-width:50px">/</span>
+
+              <div class="form-floating flex-grow-1">
+                <input name="rof_semi" type="number" class="form-control" id="rof_semi" placeholder="0" required>
+                <label for="rof_semi">Semi-auto RoF</label>
               </div>
+
+              <span class="input-group-text align-self-center" style="max-width:50px">/</span>
+
+              <div class="form-floating flex-grow-1">
+                <input name="rof_auto" type="number" class="form-control" placeholder="0"  id="rof_auto" required>
+                <label for="rof_auto">Full-auto RoF</label>
+              </div>
+
             </div>
 
-            <div class="col">
-              <label for="target_range" class="form-label">Target Range</label>
-              <input name="target_range" type="number" class="form-control" id="target_range" placeholder="ie. 15" required>
-              <div class="invalid-feedback">
-                Target range required.
-              </div>
-            </div>
-          </div>
-
-            <div class="input-group mb-3">
-
-              <div class="form-check form-switch">
-                <input name="rof_single" class="form-check-input" type="checkbox" id="rof_single">
-                <label class="form-check-label" for="rof_single">Single Shot?</label>
-              </div>
-
-              <div class="form-floating mb-3">
-                <input name="rof_semi" type="number" class="form-control" placeholder="Semi RoF" id="rof_semi">
-                <label for="rof_semi">Semi-automatic RoF</label>
-              </div>
-
-              <div class="form-floating mb-3">
-                <input name="rof_auto" type="number" class="form-control" placeholder="Auto RoF" id="rof_auto">
-                <label for="rof_auto">Fully-automatic RoF</label>
-              </div>
-            </div>
-
-            <div class="input-group input-group-lg mb-3">
-              <div class="form-floating mb-3">
-                <input name="damage_roll" type="number" class="form-control" placeholder="3" id="damage_roll">
+            <div class="input-group input-group-sm mb-3">
+              <div class="form-floating flex-grow-1">
+                <input name="damage_roll" type="number" class="form-control" placeholder="3" id="damage_roll" required>
                 <label for="damage_roll"># Damage Dice</label>
               </div>
-              <span class="input-group-text">d10 +</span>
-              <div class="form-floating mb-3">
-                <input name="damage_bonus" type="number" class="form-control" placeholder="5" id="damage_bonus">
+
+              <span class="input-group-text align-self-center" style="max-width:50px">d10 +</span>
+
+              <div class="form-floating flex-grow-1">
+                <input name="damage_bonus" type="number" class="form-control" placeholder="5" id="damage_bonus" required>
                 <label for="damage_bonus">Damage Bonus</label>
               </div>
-              <span class="input-group-text">with</span>
-              <div class="form-floating mb-3">
-                <input name="penetration" type="number" class="form-control" placeholder="10" id="penetration">
+            </div>
+
+            <div class="input-group input-group justify-content-evenly mb-3">
+              <div class="form-floating">
+                <input name="penetration" type="number" class="form-control" placeholder="10" id="penetration" required>
                 <label for="penetration">Penetration</label>
+              </div>
+
+              <div class="form-floating flex-grow-1">
+              <input name="weapon_range" type="number" class="form-control" placeholder="30" id="weapon_range" required>
+              <label for="weapon_range" class="form-label">Weapon Range</label>
               </div>
             </div>
 
             <hr class="my-4">
-            <button class="w-100 btn btn-primary btn-lg" type="submit" value="roll_weapon">Roll Attack</button>
+            <div class="row">
+              <div class="col d-flex align-items-stretch">
+                <div class="form-floating">
+                  <input name="target_range" type="number" class="form-control" id="target_range" placeholder="30" required>
+                  <label for="target_range">Target Range</label>
+              </div>
+
+              <div class="col d-flex align-items-stretch">
+                <div class="form-floating">
+                  <input name="test_characteristic" type="number" class="form-control" id="test_characteristic" placeholder="40" required>
+                  <label for="test_characteristic">Test Characteristic</label>
+                </div>
+              </div>
+
+              <div class="col d-flex align-items-stretch">
+                <button class="w-100 btn btn-primary btn-lg" type="submit" value="roll_weapon">Roll Attack</button>
+              </div>
+            </div>
         </form>
     </div>
 </div>
