@@ -107,3 +107,5 @@ ENV/
 # images
 *.png
 *.jpeg
+
+credentials.yaml
