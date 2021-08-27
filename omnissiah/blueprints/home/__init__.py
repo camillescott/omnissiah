@@ -9,8 +9,10 @@
 import logging
 import os
 
-from quart import Blueprint, current_app, redirect, url_for, render_template, request
+from quart import Blueprint, current_app, redirect, url_for, render_template, request, session
 from flask_discord import requires_authorization, Unauthorized
+
+from ...utils import fetch_valid_guilds, redirect_url
 
 
 home = Blueprint('home', __name__)
@@ -18,7 +20,10 @@ home = Blueprint('home', __name__)
 
 @home.route('/')
 async def index():
-    return await render_template('base.html', discord=current_app.discord)
+    valid = await fetch_valid_guilds()
+    return await render_template('base.html',
+                                 discord=current_app.discord,
+                                 valid_guilds=valid)
 
 
 @home.route("/login/")
@@ -49,14 +54,14 @@ async def redirect_unauthorized(e):
     return redirect(url_for("login"))
 
 
-async def fetch_valid_guilds():
-    user_guilds = current_app.discord.fetch_guilds()
-    user_guilds = set((g.id for g in user_guilds))
-    bot_guilds = list((g.id for g in current_app.bot.guilds))
+@home.route('/set-server', methods=['POST'])
+async def set_server():
+    log = logging.getLogger()
+    log.info('Do set-server')
+    form = await request.form
+    session['active_server_id'] = int(form['server-id'])
+    valid = await fetch_valid_guilds()
+    session['active_server_name'] = valid[int(form['server-id'])].name
+    log.info(f'{current_app.discord.fetch_user()} set server to {session["active_server_id"]}')
+    return redirect(redirect_url())
 
-    valid = []
-    for bg in bot_guilds:
-        if bg.id in user_guilds:
-            valid.append(bg)
-
-    return valid
