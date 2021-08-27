@@ -20,20 +20,11 @@ home = Blueprint('home', __name__)
 
 @home.route('/')
 async def index():
-    valid = await fetch_valid_guilds()
-    return await render_template('base.html',
-                                 discord=current_app.discord,
-                                 valid_guilds=valid)
+    return await render_template('base.html')
 
 
 @home.route("/login/")
 async def login():
-    log = logging.getLogger()
-
-    #session['valid_guilds'] = list(valid)
-    #log.info(f'bot guilds: {app.bot.guilds}')
-    #log.info(f'User guilds: {user_guilds}')
-    #log.info(f'Valid guilds: {valid}')
     return current_app.discord.create_session()
 
 
@@ -45,13 +36,25 @@ async def logout():
 
 @home.route("/callback/")
 async def callback():
-    current_app.discord.callback()
+    log = logging.getLogger()
+    log.info('Discord callback')
+    discord = current_app.discord
+    discord.callback()
+
+    valid_guilds = await fetch_valid_guilds()
+    session['valid-guilds'] = valid_guilds
+    session['user-avatar-url'] = discord.fetch_user().avatar_url 
+    session['user-name' ] = discord.fetch_user().name
+    session['user-id'] = discord.fetch_user().id
+    session['user-disc'] = discord.fetch_user().discriminator
+    session['user-full-name'] = str(discord.fetch_user())
+
     return redirect(url_for(".index"))
 
 
 @home.errorhandler(Unauthorized)
 async def redirect_unauthorized(e):
-    return redirect(url_for("login"))
+    return redirect(url_for("home.login"))
 
 
 @home.route('/set-server', methods=['POST'])
@@ -59,9 +62,13 @@ async def set_server():
     log = logging.getLogger()
     log.info('Do set-server')
     form = await request.form
-    session['active_server_id'] = int(form['server-id'])
-    valid = await fetch_valid_guilds()
-    session['active_server_name'] = valid[int(form['server-id'])].name
-    log.info(f'{current_app.discord.fetch_user()} set server to {session["active_server_id"]}')
+    session['active-server-id'] = int(form['server-id'])
+    valid = session.get('valid-guilds')
+    session['active-server-name'] = valid[form['server-id']]
+    log.info(f'{current_app.discord.fetch_user()} set server to {session["active-server-id"]}')
     return redirect(redirect_url())
 
+
+@home.app_context_processor
+async def navbar_args():
+    return {'discord': current_app.discord}
