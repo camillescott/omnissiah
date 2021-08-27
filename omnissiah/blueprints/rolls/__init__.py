@@ -9,12 +9,12 @@
 import logging
 import os
 
-from quart import Blueprint, current_app, redirect, url_for, render_template, request, session
+from quart import Blueprint, current_app, redirect, url_for, render_template, request, session, g
 from flask_discord import requires_authorization, Unauthorized
 
 from ...combat import player_attack, COMBAT_ACTIONS
 from ...items import ItemAvailability
-from ...utils import fetch_valid_guilds, redirect_url, SUCCESS, FAILURE
+from ...utils import redirect_url, SUCCESS, FAILURE
 from ...weapons import (WeaponClass, WeaponType, DamageType, Craftsmanship,
                       PlayerWeapon, PlayerWeaponInstance)
 
@@ -45,6 +45,7 @@ async def submit_roll_weapon():
                                            form.test_characteristic.data,
                                            actions=actions,
                                            target_range=form.target_range.data)
+        g.prev_attack = attack_ctx
 
         channels = current_app.bot.get_guild(session['active_server_id']).channels
         for c in channels:
@@ -77,9 +78,10 @@ async def submit_roll_weapon():
 @rolls.route("/roll/weapon")
 @requires_authorization
 async def roll_weapon():
-    valid_guilds = await fetch_valid_guilds()
+    log = logging.getLogger()
+    if g.get('prev_attack', False):
+        log.info(f'Prev attack: {g["prev_attack"]}')
     form = WeaponAttackForm()
     return await render_template('roll_weapon.html',
-                                 discord=current_app.discord,
-                                 valid_guilds=valid_guilds,
-                                 form=form)
+                                 form=form,
+                                 weapon_form=form.weapon)

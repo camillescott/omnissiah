@@ -1,0 +1,72 @@
+{{ weapon_form.hidden_tag() }}
+<div class="row mb-3">
+<div class="col">
+  {{ weapon_form.weapon_name.label(class='form-label') }}
+  {{ weapon_form.weapon_name(placeholder='ie. Las-pistol', class_='form-control', required=True) }}
+  <div class="invalid-feedback">
+    Enter a weapon name.
+  </div>
+</div>
+
+<div class="col">
+  {{ weapon_form.weapon_class.label(class='form-label') }}
+  {{ weapon_form.weapon_class(class_='form-control', required=True) }}
+</div>
+
+<div class="col">
+  {{ weapon_form.weapon_type.label(class='form-label') }}
+  {{ weapon_form.weapon_type(class_='form-control', required=True) }}
+</div>
+
+<div class="col">
+  {{ weapon_form.damage_type.label(class='form-label') }}
+  {{ weapon_form.damage_type(class_='form-control', required=True) }}
+</div>
+</div>
+
+<div class="input-group input-group-sm mb-3 p-1">
+  {{ weapon_form.rof_single(class_='btn-check flex-grow-1', autocomplete='off', required=True) }}
+  {{ weapon_form.rof_single.label(class_='btn btn-outline-secondary d-inline-flex align-items-center', style='border-radius:.2rem') }}
+
+  <span class="input-group-text align-self-center" style="max-width:50px">/</span>
+
+  <div class="form-floating flex-grow-1">
+    {{ weapon_form.rof_semi(class_='form-control', placeholder='0', type='number', required=True) }}
+    {{ weapon_form.rof_semi.label }}
+  </div>
+
+  <span class="input-group-text align-self-center" style="max-width:50px">/</span>
+
+  <div class="form-floating flex-grow-1">
+    {{ weapon_form.rof_auto(class_='form-control', placeholder='0', type='number', required=True) }}
+    {{ weapon_form.rof_auto.label }}
+  </div>
+
+</div>
+
+<div class="input-group input-group-sm mb-3">
+  <div class="form-floating flex-grow-1">
+    {{ weapon_form.damage_roll(class_='form-control', placeholder='3', type='number', required=True) }}
+    {{ weapon_form.damage_roll.label }}
+  </div>
+
+  <span class="input-group-text align-self-center" style="max-width:50px">d10 +</span>
+
+  <div class="form-floating flex-grow-1">
+    {{ weapon_form.damage_bonus(class_='form-control', placeholder='3', type='number', required=True) }}
+    {{ weapon_form.damage_bonus.label }}
+  </div>
+</div>
+
+<div class="input-group input-group justify-content-evenly mb-3">
+  <div class="form-floating">
+    {{ weapon_form.penetration(class_='form-control', placeholder='3', type='number', required=True) }}
+    {{ weapon_form.penetration.label }}
+  </div>
+
+  <div class="form-floating flex-grow-1">
+    {{ weapon_form.weapon_range(class_='form-control', placeholder='3', type='number', required=True) }}
+    {{ weapon_form.weapon_range.label }}
+  </div>
+</div>
+
