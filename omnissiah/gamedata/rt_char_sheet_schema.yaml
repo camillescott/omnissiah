@@ -1,0 +1,62 @@
+meta:
+  player_name: str()
+  sheet_version: num(required=False)
+sheet:
+  character_name: str()
+  career_path: str(required=False)
+  rank: int(min=1)
+  home_world: str(required=False)
+  motivation: str(required=False)
+  experience:
+    spent: int()
+    to_spend: int(min=0)
+  fate:
+    base: int(min=0)
+    current: int(min=0)
+  corruption: int(min=0, max=100)
+  insanity: int(min=0, max=100)
+  wounds:
+    base: int(min=0)
+    current: int(min=0)
+    critical: int(min=0)
+    fatigue: int(min=0)
+  mutations: list(str(), required=False)
+  characteristics:
+    WS: include('characteristic')
+    BS: include('characteristic')
+    S: include('characteristic')
+    T: include('characteristic')
+    AG: include('characteristic')
+    INT: include('characteristic')
+    PER: include('characteristic')
+    WP: include('characteristic')
+    FEL: include('characteristic')
+  skills: list(include('skill'))
+#  armour:
+#    head: include('armour_location')
+#    left_arm: include('armour_location')
+#    right_arm: include('armour_location')
+#    body: include('armour_location')
+#    left_leg: include('armour_location')
+#    right_leg: include('armour_location')
+
+---
+
+characteristic:
+  base: int(min=0)
+  advances: int(min=0, max=4)
+  modifiers: list(int(min=-60, max=60), required=False)
+  modifier_tags: list(str(), required=False)
+  bonus_multiplier: int(min=1, max=3, required=False)
+  notes: str(required=False)
+skill:
+  name: str()
+  group: str(required=False)
+  level: enum('Basic', 'Trained', '+10', '+20')
+  modifiers: list(int(min=-60, max=60), required=False)
+  modifier_tags: list(str(), required=False)
+armour_location:
+  points: int(min=0)
+  special: str(required=False)
+  weight: num(min=0)
+  upgrades: str(required=False)

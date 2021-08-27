@@ -1,0 +1,76 @@
+meta:
+  player_name: Test
+  sheet_version: 1.0
+sheet:
+  character_name: Testus Playerus
+  career_path: Rogue Trader
+  rank: 1
+  home_world: Hive World
+  motivation: Renown
+  experience:
+    spent: 1000
+    to_spend: 0
+  fate:
+    base: 4
+    current: 4
+  corruption: 5
+  insanity: 5
+  wounds:
+    base: 10
+    current: 10
+    critical: 0
+    fatigue: 0
+  characteristics:
+    WS:
+      base: 33
+      advances: 1
+      modifiers:
+        - 10
+      modifier_tags:
+        - Awesome bonus
+      notes:
+    BS: 
+      base: 38
+      advances: 1
+      bonus_multiplier: 2
+      notes:
+    S: 
+      base: 31
+      advances: 1
+      notes:
+    T: 
+      base: 41
+      advances: 1
+      notes:
+    AG: 
+      base: 31
+      advances: 1
+      notes:
+    INT: 
+      base: 35
+      advances: 1
+      bonus_multiplier: 2
+      notes:
+    PER: 
+      base: 43
+      advances: 1
+      notes:
+    WP: 
+      base: 31
+      advances: 1
+      notes:
+    FEL: 
+      base: 37
+      advances: 1
+      modifiers:
+        - 10
+      modifier_tags:
+        - Awesome bonus
+      notes:
+  skills:
+    - name: Command
+      level: Trained
+      modifiers:
+        - 10
+      modifier_tags:
+        - Book

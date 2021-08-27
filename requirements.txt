@@ -1,0 +1,11 @@
+rich>=9.0.0
+discord.py>=1.6
+disputils
+dice>=3.1
+pyyaml>=5
+xdg>=5
+yamale>=3.0.8
+
+aiofiles>=0.6
+aiosql>=3.2
+aiosqlite>=0.16.1

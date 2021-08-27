@@ -1,0 +1,50 @@
+Metadata-Version: 1.2
+Name: omnissiah
+Version: 0.1
+Summary: Another dice bot for discord.
+Home-page: https://github.com/camillescott/omnissiah
+Author: Camille Scott
+Author-email: cswel@ucdavis.edu
+License: MIT license
+Description: ======
+        omnissiah
+        ======
+        
+        
+        .. image:: https://img.shields.io/pypi/v/omnissiah.svg
+                :target: https://pypi.python.org/pypi/omnissiah
+        
+        .. image:: https://img.shields.io/travis/camillescott/omnissiah.svg
+                :target: https://travis-ci.com/camillescott/omnissiah
+        
+        .. image:: https://readthedocs.org/projects/omnissiah/badge/?version=latest
+                :target: https://omnissiah.readthedocs.io/en/latest/?badge=latest
+                :alt: Documentation Status
+        
+        
+        Another dice bot for discord.
+        
+        * Free software: MIT license
+        * Documentation: https://omnissiah.readthedocs.io.
+        
+        
+        Credits
+        -------
+        
+        This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
+        
+        .. _Cookiecutter: https://github.com/audreyr/cookiecutter
+        .. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
+        
+Keywords: omnissiah
+Platform: UNKNOWN
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Requires-Python: >=3.6

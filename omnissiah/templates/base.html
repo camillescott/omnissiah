@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+
+    <title>Omnissiah</title>
+  </head>
+
+  <body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="height: 75px">
+     <div class="container-fluid" >
+        <a class="navbar-brand" href="#">Omnissiah</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav justify-content-start me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('sheets.character_sheets') }}">Character Sheets</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('sheets.ship_sheets') }}">Ship Sheets</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('rolls.roll') }}">Roll</a>
+            </li>
+          </ul>
+          {% if discord.authorized %}
+          <a class="navbar-brand justify-content-end">
+              <img src="{{ discord.fetch_user().avatar_url }}" width="50" class="img-fluid img-thumbnail d-inline-block align-text">
+              @{{ discord.fetch_user().name }}
+          </a>
+          {% endif %}
+          <form class="d-flex mh-100 justify-content-end">
+            {% if discord.authorized %}
+            <button class="btn btn-outline-info" type="button" onclick="location.href='{{ url_for('home.logout') }}'">
+                Logout
+            </button>
+            {% else %}
+            <button class="btn btn-outline-success" type="button" onclick="location.href='{{ url_for('home.login') }}'">
+                Login with Discord
+            </button>
+            {% endif %}
+          </form>
+        </div>
+      </div> 
+    </nav>
+    {% block content %}
+    {% endblock %}
+  </body>
+</html>
+

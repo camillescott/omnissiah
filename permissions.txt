@@ -1,0 +1,2 @@
+52613479504
+https://discord.com/api/oauth2/authorize?client_id=879865251175206952&permissions=52613479504&scope=bot
