@@ -6,6 +6,10 @@ pyyaml>=5
 xdg>=5
 yamale>=3.0.8
 
+quart
+flask_discord
+flask_wtf
+
 aiofiles>=0.6
 aiosql>=3.2
 aiosqlite>=0.16.1

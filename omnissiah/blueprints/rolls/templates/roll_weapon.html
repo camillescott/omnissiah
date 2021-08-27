@@ -6,88 +6,76 @@
     </div>
     <div class="card-body text-dark">
         <form action="{{ url_for('rolls.submit_roll_weapon') }}" method="post" class="needs-validation" novalidate>
+          {{ form.hidden_tag() }}
+          {{ form.weapon.hidden_tag() }}
           <div class="row mb-3">
             <div class="col">
-              <label for="weapon_name" class="form-label">Weapon Name</label>
-              <input name="weapon_name" type="text" class="form-control" id="weapon_name" placeholder="ie. Laspistol" value="" required>
+              {{ form.weapon.weapon_name.label(class='form-label') }}
+              {{ form.weapon.weapon_name(placeholder='ie. Las-pistol', class_='form-control', required=True) }}
               <div class="invalid-feedback">
                 Enter a weapon name.
               </div>
             </div>
 
             <div class="col">
-            <label for="weapon_class" class="form-label">Weapon Class</label>
-              <select name="weapon_class" class="form-select" id="weapon_class" required>
-                {% for cls in weapon_classes %}
-                <option value="{{cls.value}}">{{ cls.value }}</option>
-                {% endfor %}
-              </select>
+              {{ form.weapon.weapon_class.label(class='form-label') }}
+              {{ form.weapon.weapon_class(class_='form-control', required=True) }}
             </div>
 
             <div class="col">
-              <label for="weapon_type" class="form-label">Weapon Type</label>
-              <select name="weapon_type" class="form-select" id="weapon_type" required>
-                {% for cls in weapon_types %}
-                <option value="{{cls.value}}">{{ cls.value }}</option>
-                {% endfor %}
-              </select>
+              {{ form.weapon.weapon_type.label(class='form-label') }}
+              {{ form.weapon.weapon_type(class_='form-control', required=True) }}
             </div>
 
             <div class="col">
-              <label for="damage_type" class="form-label">Damage Type</label>
-              <select name="damage_type" class="form-select" id="damage_type" required>
-                {% for cls in damage_types %}
-                <option value="{{cls.value}}">{{ cls.value }}</option>
-                {% endfor %}
-              </select>
+              {{ form.weapon.damage_type.label(class='form-label') }}
+              {{ form.weapon.damage_type(class_='form-control', required=True) }}
             </div>
           </div>
 
-
           <div class="input-group input-group-sm mb-3 p-1">
-
-              <input name="rof_single" type="checkbox" class="btn-check flex-grow-1" id="rof_single" checked autocomplete="off">
-              <label class="btn btn-outline-secondary d-inline-flex align-items-center" style="border-radius:.2rem" for="rof_single">Single</label>
+              {{ form.weapon.rof_single(class_='btn-check flex-grow-1', autocomplete='off', required=True) }}
+              {{ form.weapon.rof_single.label(class_='btn btn-outline-secondary d-inline-flex align-items-center', style='border-radius:.2rem') }}
 
               <span class="input-group-text align-self-center" style="max-width:50px">/</span>
 
               <div class="form-floating flex-grow-1">
-                <input name="rof_semi" type="number" class="form-control" id="rof_semi" placeholder="0" required>
-                <label for="rof_semi">Semi-auto RoF</label>
+                {{ form.weapon.rof_semi(class_='form-control', placeholder='0', type='number', required=True) }}
+                {{ form.weapon.rof_semi.label }}
               </div>
 
               <span class="input-group-text align-self-center" style="max-width:50px">/</span>
 
               <div class="form-floating flex-grow-1">
-                <input name="rof_auto" type="number" class="form-control" placeholder="0"  id="rof_auto" required>
-                <label for="rof_auto">Full-auto RoF</label>
+                {{ form.weapon.rof_auto(class_='form-control', placeholder='0', type='number', required=True) }}
+                {{ form.weapon.rof_auto.label }}
               </div>
 
             </div>
 
             <div class="input-group input-group-sm mb-3">
               <div class="form-floating flex-grow-1">
-                <input name="damage_roll" type="number" class="form-control" placeholder="3" id="damage_roll" required>
-                <label for="damage_roll"># Damage Dice</label>
+                {{ form.weapon.damage_roll(class_='form-control', placeholder='3', type='number', required=True) }}
+                {{ form.weapon.damage_roll.label }}
               </div>
 
               <span class="input-group-text align-self-center" style="max-width:50px">d10 +</span>
 
               <div class="form-floating flex-grow-1">
-                <input name="damage_bonus" type="number" class="form-control" placeholder="5" id="damage_bonus" required>
-                <label for="damage_bonus">Damage Bonus</label>
+                {{ form.weapon.damage_bonus(class_='form-control', placeholder='3', type='number', required=True) }}
+                {{ form.weapon.damage_bonus.label }}
               </div>
             </div>
 
             <div class="input-group input-group justify-content-evenly mb-3">
               <div class="form-floating">
-                <input name="penetration" type="number" class="form-control" placeholder="10" id="penetration" required>
-                <label for="penetration">Penetration</label>
+                {{ form.weapon.penetration(class_='form-control', placeholder='3', type='number', required=True) }}
+                {{ form.weapon.penetration.label }}
               </div>
 
               <div class="form-floating flex-grow-1">
-              <input name="weapon_range" type="number" class="form-control" placeholder="30" id="weapon_range" required>
-              <label for="weapon_range" class="form-label">Weapon Range</label>
+                {{ form.weapon.weapon_range(class_='form-control', placeholder='3', type='number', required=True) }}
+                {{ form.weapon.weapon_range.label }}
               </div>
             </div>
 
@@ -95,14 +83,15 @@
             <div class="row">
               <div class="col d-flex align-items-stretch">
                 <div class="form-floating">
-                  <input name="target_range" type="number" class="form-control" id="target_range" placeholder="30" required>
-                  <label for="target_range">Target Range</label>
+                  {{ form.target_range(class_='form-control', placeholder='30', type='number', required=True) }}
+                  {{ form.target_range.label }}
+                </div>
               </div>
 
               <div class="col d-flex align-items-stretch">
                 <div class="form-floating">
-                  <input name="test_characteristic" type="number" class="form-control" id="test_characteristic" placeholder="40" required>
-                  <label for="test_characteristic">Test Characteristic</label>
+                  {{ form.test_characteristic(class_='form-control', placeholder='30', type='number', required=True) }}
+                  {{ form.test_characteristic.label }}
                 </div>
               </div>
 
