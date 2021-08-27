@@ -16,6 +16,7 @@ import logging
 import os
 from pathlib import Path
 import random
+import time
 
 import discord
 from quart import current_app, request, url_for
@@ -76,6 +77,7 @@ def reverse_number(num: int):
 
 async def fetch_valid_guilds():
     log = logging.getLogger()
+    start = time.perf_counter()
 
     user_guilds = current_app.discord.fetch_guilds()
     user_guilds = set((g.id for g in user_guilds))
@@ -84,7 +86,10 @@ async def fetch_valid_guilds():
     valid = {}
     for bg in bot_guilds:
         if bg.id in user_guilds:
-            valid[bg.id] = bg
+            valid[bg.id] = bg.name
+
+    end = time.perf_counter()
+    log.info(f'fetch_valid_guilds: {end - start}s {valid}')
     
     return valid
 

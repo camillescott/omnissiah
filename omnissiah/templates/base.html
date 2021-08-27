@@ -32,20 +32,23 @@
               <a class="nav-link" href="{{ url_for('sheets.ship_sheets') }}">Ship Sheets</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('rolls.roll') }}">Roll</a>
+              <a class="nav-link" href="{{ url_for('armoury.player_weapons') }}">Armoury</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('rolls.roll_weapon') }}">Roll</a>
             </li>
           </ul>
           {% if discord.authorized %}
           <a class="navbar-brand justify-content-end">
-              <img src="{{ discord.fetch_user().avatar_url }}" width="50" class="img-fluid img-thumbnail d-inline-block align-text">
-              @{{ discord.fetch_user().name }}
+              <img src="{{ session.get('user-avatar-url') }}" width="50" class="img-fluid img-thumbnail d-inline-block align-text">
+              @{{ session.get('user-name') }}#{{ session.get('user-disc') }}
           </a>
           {% if discord.authorized %}
           <form class="form-inline" action="{{ url_for('home.set_server') }}" method="post">
               <select onchange="this.form.submit()" class="form-select" id="server_selection" name="server-id">
-                <option selected>{{ session.get('active_server_name', 'Select a server') }}</option>
-                {% for gid, guild in valid_guilds.items() %}
-                <option value={{ gid }} type="number">{{guild.name}}</option>
+                <option selected>{{ session.get('active-server-name', 'Select a server') }}</option>
+                {% for gid, gname in session.get('valid-guilds', {}).items() %}
+                <option value={{ gid }} type="number">{{gname}}</option>
                 {% endfor %}
               </select>
           </form>

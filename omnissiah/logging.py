@@ -16,7 +16,7 @@ def setup(log_file):
 
     logging.basicConfig(
         filename=log_file,
-        level=logging.INFO,
+        level=logging.DEBUG,
         format='%(asctime)s %(levelname)10s [%(filename)s:%(lineno)s - %(funcName)20s()] %(message)s',
         datefmt="[%x %X]"
     )

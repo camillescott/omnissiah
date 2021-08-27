@@ -14,6 +14,7 @@ import yaml
 import quart.flask_patch
 from quart.flask_patch import request, session
 from quart import Quart, Blueprint, redirect, url_for, render_template, g, flash, current_app
+from quart_motor import Motor
 
 from zardoz.cli import build_bot
 
@@ -52,9 +53,13 @@ def build_app(args):
     app.config["DISCORD_REDIRECT_URI"] = "http://localhost:5000/callback" # URL to your callback endpoint.
     app.config["DISCORD_BOT_TOKEN"] = ''  # Required to access BOT resources.
     app.config["EXPLAIN_TEMPLATE_LOADING"] = True
+    app.config["MONGO_URI"] = "mongodb://localhost:27017/omnissiah-database"
 
     discord = DiscordOAuth2Session(app)
     app.discord = discord
+
+    mongo = Motor(app)
+    app.mongo = mongo
 
     return app
 
@@ -74,15 +79,18 @@ def run_app(args):
     from .blueprints.home import home
     from .blueprints.sheets import sheets
     from .blueprints.rolls import rolls
+    from .blueprints.armoury import armoury
 
     app.register_blueprint(home)
     app.register_blueprint(sheets)
     app.register_blueprint(rolls)
+    app.register_blueprint(armoury)
 
     @app.before_serving
     async def startup():
 
         loop = asyncio.get_event_loop()
+        loop.set_debug(True)
         bot, DB = build_bot(args,
                             token_name='OMNISSIAH_TOKEN',
                             prefix='o',
