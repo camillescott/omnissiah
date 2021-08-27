@@ -14,7 +14,7 @@ from flask_discord import requires_authorization, Unauthorized
 
 from ...combat import player_attack, COMBAT_ACTIONS
 from ...items import ItemAvailability
-from ...utils import fetch_valid_guilds, redirect_url
+from ...utils import fetch_valid_guilds, redirect_url, SUCCESS, FAILURE
 from ...weapons import (WeaponClass, WeaponType, DamageType, Craftsmanship,
                       PlayerWeapon, PlayerWeaponInstance)
 
@@ -37,12 +37,33 @@ async def submit_roll_weapon():
     log.info(f'Weapon Form: {form.data}')
     if form.validate():
         weapon_model = form.weapon.get_weapon_model()
+        weapon_instance = PlayerWeaponInstance(weapon_model, craftsmanship=Craftsmanship.Good)
         log.info(f'Weapon model: {weapon_model}')
+
+        status, attack_ctx = player_attack(weapon_instance, form.test_characteristic.data, target_range=form.target_range.data)
+
     
         channels = current_app.bot.get_guild(session['active_server_id']).channels
         for c in channels:
             if c.name == 'dice':
-                await c.send(f'{current_app.discord.fetch_user().name} added weapon: {weapon_model}')
+                status_str = SUCCESS if status else FAILURE
+                result = (
+                    f'{current_app.discord.fetch_user().name} attacked using {weapon_model.name}: \n'
+                    f'**Char value**: {form.test_characteristic.data}\n'
+                    f'**Target range**: {form.target_range.data}\n'
+                    f'**Weapon range**: {weapon_model.weapon_range}\n'
+                    f'**Attack roll**: {attack_ctx.attack_roll} <= {attack_ctx.test} ⤳  {status_str}\n'
+                )
+                if status:
+                    result += (
+                        f'**Total damage**: {attack_ctx.total_damage} {weapon_model.damage_type.value} @ pen {weapon_model.pen}\n'
+                        f'**DoS**: {attack_ctx.attack_degrees}\n'
+                        f'**Hits**: {attack_ctx.hits}\n'
+                        f'**Locations**: {", ".join(attack_ctx.locations)}\n'
+                        f'**Rolls**:\n'
+                        f'{attack_ctx.damage_str}'
+                    )
+                await c.send(result)
     else:
         log.warning(f'Form failed validation: {form.errors}')
 

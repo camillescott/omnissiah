@@ -162,10 +162,11 @@ HIT_LOC_TABLE = HitLocTable()
 
 class DamageRoll:
 
-    def __init__(self, dice, bonus):
+    def __init__(self, dice, bonus, die='d10'):
         self.bonus = bonus
         self.fury_bonus = 0
         self.dice = dice
+        self.die = die
 
     def replace_lowest(self, replacement):
         if min(self.dice) < replacement:
@@ -179,6 +180,12 @@ class DamageRoll:
 
     def add_bonus(self, extra_bonus):
         self.bonus += extra_bonus
+
+    @property
+    def damage_str(self):
+        extra = f' + (fury ⤳ {self.fury_bonus})' if self.fury_bonus else ''
+        result = f'({len(self.dice)}{self.die} ⤳ {self.dice}) + {self.bonus}{extra}'
+        return result
 
 
 class AttackContext:
@@ -223,7 +230,7 @@ class AttackContext:
             hits_max = self.weapon.rof_semi
         elif FullAutoBurst in self.actions:
             hits_max = self.weapon.rof_auto
-        elif weapon.weapon_class == WeaponClass.Melee:
+        elif self.weapon.weapon_class == WeaponClass.Melee:
             hits_max = 1
         else:
             hits_max = int(self.weapon.rof_single)
@@ -236,6 +243,19 @@ class AttackContext:
     @property
     def total_damage(self):
         return sum((int(roll) for roll in self.damage_rolls)) + self.damage_bonus
+
+    @property
+    def damage_str(self):
+        extra = f' + {self.damage_bonus}' if self.damage_bonus else ''
+        rolls = '\n'.join((r.damage_str for r in self.damage_rolls))
+        return f'{rolls}{extra}'
+
+    @property
+    def locations(self):
+        if self.attack_roll:
+            return HIT_LOC_TABLE.get_location(self.attack_roll, self.hits)
+        else:
+            return []
 
 
 def player_attack_test(ctx, quiet: bool = True):
@@ -323,7 +343,8 @@ def player_attack(weapon_instance, char_val, char_bonus = None,
 
     if not ctx.success:
         # damage, effective_char, degrees, hits, locations, message
-        return 0, ctx.test, ctx.attack_degrees, 0, [], "Failed to hit"
+        # return 0, ctx.test, ctx.attack_roll, ctx.attack_degrees, 0, [], "Failed to hit"
+        return False, ctx
     else:
         ctx.hits_base = 1
 
@@ -375,5 +396,5 @@ def player_attack(weapon_instance, char_val, char_bonus = None,
 
     _print(f'final damage: {ctx.total_damage}')
 
-    locs = HIT_LOC_TABLE.get_location(ctx.attack_roll, ctx.hits)
-    return ctx.total_damage, ctx.test, ctx.attack_degrees, ctx.hits, locs, "Hit!"
+    return True, ctx
+    #return ctx.total_damage, ctx.test, ctx.attack_roll, ctx.attack_degrees, ctx.hits, locs, "Hit!"
