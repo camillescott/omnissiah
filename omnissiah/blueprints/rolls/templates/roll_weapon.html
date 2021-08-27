@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="card border-dark mb-3 w-50"">
+<div class="card border-dark mb-3 w-50">
     <div class="card-header">
         Weapon Definition
     </div>
@@ -8,6 +8,7 @@
         <form action="{{ url_for('rolls.submit_roll_weapon') }}" method="post" class="needs-validation" novalidate>
           {{ form.hidden_tag() }}
           {{ form.weapon.hidden_tag() }}
+          {{ form.player_action.hidden_tag() }}
           <div class="row mb-3">
             <div class="col">
               {{ form.weapon.weapon_name.label(class='form-label') }}
@@ -93,6 +94,10 @@
                   {{ form.test_characteristic(class_='form-control', placeholder='30', type='number', required=True) }}
                   {{ form.test_characteristic.label }}
                 </div>
+              </div>
+
+              <div class="col d-flex align-items-stretch">
+                {{ form.player_action.action(class_='form-control', required=True) }}
               </div>
 
               <div class="col d-flex align-items-stretch">

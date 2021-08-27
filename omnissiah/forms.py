@@ -12,6 +12,7 @@ from wtforms import (Form, StringField, FormField, SubmitField, IntegerField,
                      SelectField, BooleanField, DecimalField, validators)
 from wtforms.validators import DataRequired, ValidationError
 
+from .combat import COMBAT_ACTIONS
 from .items import ItemAvailability
 from .weapons import (WeaponClass, WeaponType, DamageType, Craftsmanship,
                       PlayerWeapon, PlayerWeaponInstance)
@@ -61,7 +62,15 @@ class WeaponForm(FlaskForm):
         )
 
 
+class PlayerActionsForm(FlaskForm):
+    action = SelectField('Action',
+                         default='Aim Half',
+                         choices=[k for k in COMBAT_ACTIONS],
+                         coerce=lambda k: COMBAT_ACTIONS[k])
+
+
 class WeaponAttackForm(FlaskForm):
     weapon = FormField(WeaponForm)
+    player_action = FormField(PlayerActionsForm)
     target_range = IntegerField('Target Range')
     test_characteristic = IntegerField('Test Characteristic')

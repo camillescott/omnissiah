@@ -38,11 +38,14 @@ async def submit_roll_weapon():
     if form.validate():
         weapon_model = form.weapon.get_weapon_model()
         weapon_instance = PlayerWeaponInstance(weapon_model, craftsmanship=Craftsmanship.Good)
+        actions = [form.player_action.action.data]
         log.info(f'Weapon model: {weapon_model}')
 
-        status, attack_ctx = player_attack(weapon_instance, form.test_characteristic.data, target_range=form.target_range.data)
+        status, attack_ctx = player_attack(weapon_instance,
+                                           form.test_characteristic.data,
+                                           actions=actions,
+                                           target_range=form.target_range.data)
 
-    
         channels = current_app.bot.get_guild(session['active_server_id']).channels
         for c in channels:
             if c.name == 'dice':
@@ -52,7 +55,8 @@ async def submit_roll_weapon():
                     f'**Char value**: {form.test_characteristic.data}\n'
                     f'**Target range**: {form.target_range.data}\n'
                     f'**Weapon range**: {weapon_model.weapon_range}\n'
-                    f'**Attack roll**: {attack_ctx.attack_roll} <= {attack_ctx.test} ⤳  {status_str}\n'
+                    f'**Attack action**: {actions[0].name}\n'
+                    f'**Attack roll**: {status_str}  {attack_ctx.test_str}\n'
                 )
                 if status:
                     result += (

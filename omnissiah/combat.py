@@ -194,7 +194,7 @@ class AttackContext:
         self.characteristic = weapon.test_characteristic
         self.test_base = test_base
         self.weapon = weapon
-        self._test_bonus = 0
+        self._test_bonus = []
         self.target_range = target_range
         self.hits_base = 0
         self.hits_extra = 0
@@ -208,7 +208,7 @@ class AttackContext:
         self.damage_rolls = []
 
     def add_test_bonus(self, extra):
-        self._test_bonus += extra
+        self._test_bonus.append(extra)
 
     def add_hits(self, extra):
         self.hits_extra += extra
@@ -218,7 +218,16 @@ class AttackContext:
 
     @property
     def test_bonus(self):
-        return min(60, self._test_bonus)
+        return min(60, sum(self._test_bonus))
+
+    @property
+    def test_str(self):
+        ops = [str(self.test_base)]
+        for b in self._test_bonus:
+            ops.append('+' if b >= 0 else '-')
+            ops.append(str(abs(b)))
+        ops = ''.join(ops)
+        return f'{self.attack_roll} <= ({ops}={self.test})'
 
     @property
     def test(self):
