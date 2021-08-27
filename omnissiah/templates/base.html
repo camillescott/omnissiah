@@ -40,6 +40,16 @@
               <img src="{{ discord.fetch_user().avatar_url }}" width="50" class="img-fluid img-thumbnail d-inline-block align-text">
               @{{ discord.fetch_user().name }}
           </a>
+          {% if discord.authorized %}
+          <form class="form-inline" action="{{ url_for('home.set_server') }}" method="post">
+              <select onchange="this.form.submit()" class="form-select" id="server_selection" name="server-id">
+                <option selected>{{ session.get('active_server_name', 'Select a server') }}</option>
+                {% for gid, guild in valid_guilds.items() %}
+                <option value={{ gid }} type="number">{{guild.name}}</option>
+                {% endfor %}
+              </select>
+          </form>
+          {% endif %}
           {% endif %}
           <form class="d-flex mh-100 justify-content-end">
             {% if discord.authorized %}
