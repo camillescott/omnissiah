@@ -1,9 +1,0 @@
-aiofiles
-aiosql
-aiosqlite
-dice
-discord.py
-disputils
-pyyaml
-rich
-xdg
