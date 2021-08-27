@@ -12,11 +12,13 @@ from enum import Enum
 from typing import TypeVar, Type, Callable, List, Dict, Any
 from datetime import datetime
 import functools
+import logging
 import os
 from pathlib import Path
 import random
 
 import discord
+from quart import current_app, request, url_for
 from xdg import xdg_data_home
 
 
@@ -70,6 +72,27 @@ def reverse_number(num: int):
         result = (num * 10) + (num % 10)
         num = num // 10
     return result
+
+
+async def fetch_valid_guilds():
+    log = logging.getLogger()
+
+    user_guilds = current_app.discord.fetch_guilds()
+    user_guilds = set((g.id for g in user_guilds))
+    bot_guilds = list((g for g in current_app.bot.guilds))
+
+    valid = {}
+    for bg in bot_guilds:
+        if bg.id in user_guilds:
+            valid[bg.id] = bg
+    
+    return valid
+
+
+def redirect_url(default='index'):
+    return request.args.get('next') or \
+           request.referrer or \
+           url_for(default)
 
 
 def handle_http_exception(func):
