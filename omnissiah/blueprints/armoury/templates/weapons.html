@@ -1,19 +1,70 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="card text-white bg-dark mb-3 w-70 position-absolute top-50 start-50 translate-middle">
-    <h5 class="card-header">
-        Add Weapon to Armoury
-    </h5>
-    <div class="card-body text-dark">
-        <form action="{{ url_for('armoury.player_add_weapon') }}" method="post" class="needs-validation" novalidate>
-          {% include 'weapon_form.html' %}
+  <div class="row">
+    <div class="col ms-3">
+      <div class="card text-white bg-dark w-auto">
+        <h4 class="card-header">
+          Armoury
+        </h4>
+        <div class="card-body text-dark">
+          <div class="list-group">
+            {% for weapon, _id in player_weapons %}
+              <div class="list-group-item border-secondary border-3 rounded-end">
+                <div class="d-flex w-100 justify-content-between">
+                  <h5 class="mb-1">{{weapon.name}}</h5>
+                  <em>{{weapon.weapon_class.name}}, {{weapon.weapon_type.name}}</em>
+                </div>
+                <hr class="my-1">
+                <div class="row position-relative">
+                  <div class="col-9">
+                    <dl class="row my-0">
+                      <dt class="col-sm-3">Damage</dt>
+                      <dd class="col-sm-9">{{ weapon.damage_roll }}d10 + {{weapon.damage_bonus}}</dd>
+
+                      <dt class="col-sm-3">Damage Type</dt>
+                      <dd class="col-sm-9">{{weapon.damage_type.name}}</dd>
+
+                      <dt class="col-sm-3">RoF</dt>
+                      <dd class="col-sm-9">{{weapon.pretty_rof}}</dd>
+
+                      <dt class="col-sm-3">Range</dt>
+                      <dd class="col-sm-9">{{weapon.weapon_range}}</dd>
+                    </dl>
+                  </div>
+                  <div class="col-3">
+                    <form method="post">
+                      <div class="btn-groupmy-1 me-1 position-absolute bottom-0 end-0" role="group" aria-label="add-remove-buttons">
+                        <button type="submit" class="btn btn-danger" value="{{_id}}" name="weapon-id" id="weapon-id" formaction="{{url_for('armoury.player_delete_weapon')}}">Delete</button>
+                        <button type="button" class="btn btn-success">Equip</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="col me-3">
+      <div class="card text-white bg-dark w-auto">
+        <h4 class="card-header">
+          Add Weapon to Armoury
+        </h4>
+        <div class="card-body text-dark">
+          <form action="{{ url_for('armoury.player_add_weapon') }}" method="post" class="needs-validation" novalidate>
+            {% include 'weapon_form.html' %}
             <hr class="my-4">
             <div class="row">
-               <div class="d-flex align-items-stretch">
+              <div class="d-flex align-items-stretch">
                 <button class="w-100 btn btn-primary btn-lg" type="submit" value="add_weapon">Add Weapon</button>
               </div>
             </div>
-        </form>
+          </form>
+        </div>
+      </div>
     </div>
-</div>
+  </div>
 {% endblock %}

@@ -7,6 +7,7 @@
 # Date   : 22.02.2021
 
 import argparse
+import collections
 from dataclasses import is_dataclass
 from enum import Enum
 from typing import TypeVar, Type, Callable, List, Dict, Any
@@ -112,6 +113,13 @@ def handle_http_exception(func):
                                     ' I\'m only human.')
             raise
     return wrapper
+
+
+def is_iterable(obj):
+    return (
+        isinstance(obj, collections.Iterable)
+        and not isinstance(obj, str)
+    )
 
 
 class EnumAction(argparse.Action):
